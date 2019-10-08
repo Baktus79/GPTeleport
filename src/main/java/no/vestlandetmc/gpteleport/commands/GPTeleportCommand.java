@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import no.vestlandetmc.gpteleport.handlers.MessageHandler;
+import no.vestlandetmc.gpteleport.handlers.StorageHandler;
 
 public class GPTeleportCommand implements CommandExecutor {
 
@@ -27,6 +28,7 @@ public class GPTeleportCommand implements CommandExecutor {
 		final Player player = (Player) sender;
 		final UUID uuid = player.getUniqueId();
 		Claim claim = null;
+		final StorageHandler storage = new StorageHandler();
 
 		if(args.length != 0) {
 			if(isInt(args[0])) {
@@ -49,6 +51,10 @@ public class GPTeleportCommand implements CommandExecutor {
 		if(claim == null) {
 			MessageHandler.sendMessage(player, "&cThis claim does not exist.");
 			return true;
+		} else if(claim.getOwnerName().equals(player.getName())) {
+			MessageHandler.sendMessage(player, "&cYou are not the owner of this claim.");
+
+			return true;
 		}
 
 		final Location locMin = claim.getLesserBoundaryCorner();
@@ -59,9 +65,13 @@ public class GPTeleportCommand implements CommandExecutor {
 		final double locY = locMax.getWorld().getHighestBlockAt((int) locX, (int) locZ).getY();
 		final World world = locMax.getWorld();
 
-		final Location loc = new Location(world, locX, locY, locZ);
-
-		player.teleport(loc);
+		if(storage.storedLocation(claim.getID().toString())) {
+			final Location loc = storage.getLocation(claim.getID().toString());
+			player.teleport(loc);
+		} else {
+			final Location loc = new Location(world, locX, locY, locZ);
+			player.teleport(loc);
+		}
 
 		MessageHandler.sendMessage(player, "&eYou have successfully teleported to your claim with the id &6" + this.claimId);
 

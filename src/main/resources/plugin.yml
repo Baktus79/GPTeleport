@@ -24,11 +24,33 @@ commands:
     permission: gpteleport.teleport
     permission-message: §cSorry, but you do not have permissions to do that.
     usage: /<command>
+  setclaimspawn:
+    description: Set new spawn for your claim.
+    aliases:
+    - scspawn
+    - gptspawn
+    permission: gpteleport.setspawn
+    permission-message: §cSorry, but you do not have permissions to do that.
+    usage: /<command>
+  setclaimname:
+    description: Set custom name for your claim.
+    aliases:
+    - gptname
+    - scname
+    permission: gpteleport.setname
+    permission-message: §cSorry, but you do not have permissions to do that.
+    usage: /<command> [name]
 permissions:
   gpteleport.teleport:
     description: Be able to use the command /gpteleport
     default: op
   gpteleport.list:
     description: Be able to use the command /gpteleportlist
+    default: op
+  gpteleport.setspawn:
+    description: Be able to use the command /setclaimspawn
+    default: op
+  gpteleport.setname:
+    description: Be able to use the command /setclaimname
     default: op
     

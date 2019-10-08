@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import no.vestlandetmc.gpteleport.handlers.MessageHandler;
+import no.vestlandetmc.gpteleport.handlers.StorageHandler;
 
 public class GPTPListCommand implements CommandExecutor {
 
@@ -28,6 +29,7 @@ public class GPTPListCommand implements CommandExecutor {
 		final Player player = (Player) sender;
 		final UUID uuid = player.getUniqueId();
 		final int maxClaims = GriefPrevention.instance.dataStore.getPlayerData(uuid).getClaims().size();
+		final StorageHandler storage = new StorageHandler();
 
 		if(args.length != 0) {
 			if(isInt(args[0])) {
@@ -57,12 +59,19 @@ public class GPTPListCommand implements CommandExecutor {
 
 			if(i >= this.countFrom) {
 				final Claim claims = (Claim) GriefPrevention.instance.dataStore.getPlayerData(uuid).getClaims().toArray()[i];
+
 				final Location locMin = claims.getLesserBoundaryCorner();
 				final Location locMax = claims.getGreaterBoundaryCorner();
-				final double locX = (locMin.getX()+locMax.getX()) / 2;
-				final double locZ = (locMin.getZ()+locMax.getZ()) / 2;
+				final int locX = (int) ((locMin.getX()+locMax.getX()) / 2);
+				final int locZ = (int) ((locMin.getZ()+locMax.getZ()) / 2);
 
-				MessageHandler.sendMessage(player, "&eClaimID: &6" + claims.getID() + "  &eCoordinates: &6X:" + locX + " Z:" + locZ);
+				if(storage.stored(claims.getID().toString())) {
+					final String name = storage.getName(claims.getID().toString());
+					MessageHandler.sendMessage(player, "&eClaimID: &6" + claims.getID() + " &eName: &6" + name + " &eCoordinates: &6X:" + locX + " Z:" + locZ);
+				} else {
+					MessageHandler.sendMessage(player, "&eClaimID: &6" + claims.getID() + " &eName: &6" + "None" + " &eCoordinates: &6X:" + locX + " Z:" + locZ);
+				}
+
 
 				if(i == this.countTo - 1) {
 					MessageHandler.sendMessage(player, "");
