@@ -13,7 +13,7 @@ commands:
     aliases:
     - gpt
     - gptel
-    permission: gpteleport.list
+    permission: gpteleport.teleport
     permission-message: §cSorry, but you do not have permissions to do that.
     usage: /<command>
   gpteleportlist:
@@ -21,7 +21,7 @@ commands:
     aliases:
     - gptl
     - gptlist
-    permission: gpteleport.teleport
+    permission: gpteleport.list
     permission-message: §cSorry, but you do not have permissions to do that.
     usage: /<command>
   setclaimspawn:
