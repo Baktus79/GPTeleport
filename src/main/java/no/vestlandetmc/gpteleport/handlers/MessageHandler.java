@@ -15,11 +15,11 @@ public class MessageHandler {
 	}
 
 	public static void sendTitle(Player player, String title, String subtitle) {
-		player.sendTitle(colorize(title), colorize(subtitle), 20, 3 * 20, 10);
+		player.sendTitle(colorize(title), colorize(subtitle), 20, 20, 10);
 	}
 
-	public static void sendTitle(Player player, String title, String subtitle, int stay) {
-		player.sendTitle(colorize(title), colorize(subtitle), 20, (stay * 20), 10);
+	public static void sendTitle(Player player, String title, String subtitle,int in, int stay, int out) {
+		player.sendTitle(colorize(title), colorize(subtitle), (in * 20), (stay * 20), (out * 20));
 	}
 
 	public static void sendMessage(Player player, String... messages) {
@@ -44,6 +44,19 @@ public class MessageHandler {
 
 	public static String colorize(String message) {
 		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
+	public static String placeholders(String message, String claimid, String player, String name, String loc, String world, String time) {
+		final String converted = message.
+				replaceAll("%claimid%", claimid).
+				replaceAll("%player%", player).
+				replaceAll("%name%", name).
+				replaceAll("%world%", world).
+				replaceAll("%time%", time).
+				replaceAll("%coordinate%", loc);
+
+		return converted;
+
 	}
 
 }

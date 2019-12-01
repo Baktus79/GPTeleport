@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import no.vestlandetmc.gpteleport.config.Messages;
 import no.vestlandetmc.gpteleport.handlers.MessageHandler;
 import no.vestlandetmc.gpteleport.handlers.StorageHandler;
 
@@ -37,15 +38,15 @@ public class GPTPListCommand implements CommandExecutor {
 				this.countTo = 5 * number;
 				this.countFrom = (5 * number) - 5;
 			} else {
-				MessageHandler.sendMessage(player, "&c" + args[0] + " is not a valid number.");
+				MessageHandler.sendMessage(player, Messages.UNVALID_NUMBER);
 				return true;
 			}
 		}
 
-		MessageHandler.sendMessage(player, "&e-- === [ &6Claimslist for " + player.getDisplayName() +  " &e] === --");
+		MessageHandler.sendMessage(player, MessageHandler.placeholders(Messages.LIST_HEADER, null, player.getDisplayName(), null, null, null, null));
 
 		if(maxClaims == 0) {
-			MessageHandler.sendMessage(player, "&cYou do not have any claims yet.");
+			MessageHandler.sendMessage(player, Messages.LIST_NOCLAIM);
 		}
 
 		final int totalPage = (maxClaims / 5) + 1;
@@ -67,9 +68,9 @@ public class GPTPListCommand implements CommandExecutor {
 
 				if(storage.stored(claims.getID().toString())) {
 					final String name = storage.getName(claims.getID().toString());
-					MessageHandler.sendMessage(player, "&eClaimID: &6" + claims.getID() + " &eName: &6" + name + " &eCoordinates: &6X:" + locX + " Z:" + locZ);
+					MessageHandler.sendMessage(player, Messages.LIST_CLAIMID + " " + Messages.LIST_CLAIMID_COLOR + claims.getID().toString() + " " + Messages.LIST_NAME + " " + Messages.LIST_NAME_COLOR + name + " " + Messages.LIST_COORDS + " " + Messages.LIST_COORDS_COLOR + "X:" + locX + " Z:" + locZ);
 				} else {
-					MessageHandler.sendMessage(player, "&eClaimID: &6" + claims.getID() + " &eName: &6" + "None" + " &eCoordinates: &6X:" + locX + " Z:" + locZ);
+					MessageHandler.sendMessage(player, Messages.LIST_CLAIMID + " " + Messages.LIST_CLAIMID_COLOR + claims.getID().toString() + " " + Messages.LIST_NAME + " " + Messages.LIST_NAME_COLOR + "None" + " " + Messages.LIST_COORDS + " " + Messages.LIST_COORDS_COLOR + "X:" + locX + " Z:" + locZ);
 				}
 
 

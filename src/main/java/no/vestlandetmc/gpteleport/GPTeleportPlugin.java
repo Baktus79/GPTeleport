@@ -7,8 +7,11 @@ import no.vestlandetmc.gpteleport.commands.GPTPListCommand;
 import no.vestlandetmc.gpteleport.commands.GPTeleportCommand;
 import no.vestlandetmc.gpteleport.commands.SetClaimName;
 import no.vestlandetmc.gpteleport.commands.SetClaimSpawn;
+import no.vestlandetmc.gpteleport.config.Config;
+import no.vestlandetmc.gpteleport.config.Messages;
 import no.vestlandetmc.gpteleport.handlers.MessageHandler;
 import no.vestlandetmc.gpteleport.handlers.UpdateNotification;
+import no.vestlandetmc.gpteleport.listener.PlayerListener;
 import no.vestlandetmc.gpteleport.runnable.Schedule;
 import no.vestlandetmc.gpteleport.storage.DataStorage;
 
@@ -28,11 +31,14 @@ public class GPTeleportPlugin extends JavaPlugin{
 		this.getCommand("gpteleport").setExecutor(new GPTeleportCommand());
 		this.getCommand("setclaimspawn").setExecutor(new SetClaimSpawn());
 		this.getCommand("setclaimname").setExecutor(new SetClaimName());
+		this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		new DataStorage();
+		Messages.initialize();
+		Config.initialize();
 		new Schedule().runTaskTimer(this, 0L, (3600 * 20L));
 
 		if(getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
-			MessageHandler.sendConsole("[" + getDescription().getPrefix() + "] &7Successfully hooked into &2GriefPrevention");
+			MessageHandler.sendConsole("[" + getDescription().getPrefix() + "] &7Successfully hooked into GriefPrevention");
 			MessageHandler.sendConsole("");
 		} else {
 			MessageHandler.sendConsole("[" + getDescription().getPrefix() + "] &cGriefPrevention was not found! Please add GriefPrevention.");

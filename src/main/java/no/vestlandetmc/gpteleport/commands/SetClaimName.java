@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import no.vestlandetmc.gpteleport.config.Messages;
 import no.vestlandetmc.gpteleport.handlers.MessageHandler;
 import no.vestlandetmc.gpteleport.handlers.StorageHandler;
 
@@ -26,35 +27,31 @@ public class SetClaimName implements CommandExecutor {
 		final StorageHandler storage = new StorageHandler();
 
 		if(args.length == 0) {
-			MessageHandler.sendMessage(player, "&cYou must define claimID and a name.");
+			MessageHandler.sendMessage(player, Messages.SETNAME_NOARGS);
 			return true;
 		}
 
 		if(!isLong(args[0])) {
-			MessageHandler.sendMessage(player, "&cYou must enter a valid number.");
+			MessageHandler.sendMessage(player, Messages.UNVALID_NUMBER);
 			return true;
 		}
 
 		for(final Claim claims : GriefPrevention.instance.dataStore.getPlayerData(uuid).getClaims()) {
 			if(claims.getID().toString().equals(args[0])) {
 				if(args.length < 2) {
-					MessageHandler.sendMessage(player, "&cYou must enter a name for your claim.");
+					MessageHandler.sendMessage(player, Messages.SETNAME_NONAME);
 					return true;
 				} else {
-					if(claims.getOwnerName().equals(player.getName())) {
-						MessageHandler.sendMessage(player, "&cYou are not the owner of this claim.");
-
-						return true;
-					}
-
 					storage.setName(claims.getID().toString(), args[1]);
-					MessageHandler.sendMessage(player, "&eName for claimid &6" + claims.getID().toString() + " &ehas been set to &6" + args[1]);
+					MessageHandler.sendMessage(player, MessageHandler.placeholders(Messages.SETNAME_SETNAME, claims.getID().toString(), player.getName(), args[1], null, null, null));
 					return true;
 				}
 			}
 		}
 
-		return false;
+		MessageHandler.sendMessage(player, Messages.UNVALID_CLAIMID);
+
+		return true;
 	}
 
 	private boolean isLong(String str) {

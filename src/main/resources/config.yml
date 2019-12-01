@@ -1,0 +1,6 @@
+cooldown:
+  enable: false
+  time: 30
+warmup:
+  enable: false
+  time: 3

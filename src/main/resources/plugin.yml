@@ -12,21 +12,23 @@ commands:
     description: Teleport to one of your claims.
     aliases:
     - gpt
-    - gptel
+    - gptp
     permission: gpteleport.teleport
     permission-message: §cSorry, but you do not have permissions to do that.
-    usage: /<command>
+    usage: /<command> [claimid]
   gpteleportlist:
-    description: Teleport to one of your claims.
+    description: Get a list of all your claims.
     aliases:
+    - gptplist
     - gptl
     - gptlist
     permission: gpteleport.list
     permission-message: §cSorry, but you do not have permissions to do that.
-    usage: /<command>
+    usage: /<command> [page]
   setclaimspawn:
     description: Set new spawn for your claim.
     aliases:
+    - gptpspawn
     - scspawn
     - gptspawn
     permission: gpteleport.setspawn
@@ -35,6 +37,7 @@ commands:
   setclaimname:
     description: Set custom name for your claim.
     aliases:
+    - gptpname
     - gptname
     - scname
     permission: gpteleport.setname

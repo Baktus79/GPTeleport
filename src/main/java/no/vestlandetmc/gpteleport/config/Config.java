@@ -6,44 +6,20 @@ public class Config extends ConfigHandler {
 		super(fileName);
 	}
 
-	public static String
-	UNVALID_PLAYERNAME,
-	OUTSIDE_CLAIM,
-	NO_ARGUMENTS,
-	BAN_SELF,
-	PROTECTED,
-	NO_ACCESS,
-	BANNED,
-	BANNED_TARGET,
-	ALREADY_BANNED,
-	UNBANNED,
-	UNBANNED_TARGET,
-	NOT_BANNED,
-	UNVALID_NUMBER,
-	LIST_HEADER,
-	LIST_EMPTY,
-	TITLE_MESSAGE,
-	SUBTITLE_MESSAGE;
+	public static boolean
+	COOLDOWN_ENABLE,
+	WARMUP_ENABLE;
+
+	public static int
+	COOLDOWN_TIME,
+	WARMUP_TIME;
 
 	private void onLoad() {
 
-		UNVALID_PLAYERNAME = getString("unvalid-playername");
-		OUTSIDE_CLAIM = getString("outside-claim");
-		NO_ARGUMENTS = getString("no-arguments");
-		BAN_SELF = getString("ban-self");
-		PROTECTED = getString("protected");
-		NO_ACCESS = getString("no-access");
-		BANNED = getString("banned");
-		BANNED_TARGET = getString("banned-target");
-		ALREADY_BANNED = getString("already-banned");
-		UNBANNED = getString("unbanned");
-		UNBANNED_TARGET = getString("unbanned-target");
-		NOT_BANNED = getString("not-banned");
-		UNVALID_NUMBER = getString("unvalid-number");
-		LIST_HEADER = getString("list-header");
-		LIST_EMPTY = getString("list-empty");
-		TITLE_MESSAGE = getString("title-message");
-		SUBTITLE_MESSAGE = getString("subtitle-message");
+		COOLDOWN_ENABLE = getBoolean("cooldown.enable");
+		WARMUP_ENABLE = getBoolean("warmup.enable");
+		COOLDOWN_TIME = getInt("cooldown.time");
+		WARMUP_TIME = getInt("warmup.time");
 
 	}
 

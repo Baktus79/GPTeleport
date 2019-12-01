@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import no.vestlandetmc.gpteleport.config.Messages;
 import no.vestlandetmc.gpteleport.handlers.MessageHandler;
 import no.vestlandetmc.gpteleport.handlers.StorageHandler;
 
@@ -26,11 +27,11 @@ public class SetClaimSpawn implements CommandExecutor {
 		final Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, true, null);
 
 		if(claim == null) {
-			MessageHandler.sendMessage(player, "&cPlease stand inside your claim to set a new spawn location.");
+			MessageHandler.sendMessage(player, Messages.SETSPAWN_OUTSIDE);
 			return true;
 		} else {
-			if(claim.getOwnerName().equals(player.getName())) {
-				MessageHandler.sendMessage(player, "&cYou are not the owner of this claim.");
+			if(!claim.getOwnerName().equals(player.getName())) {
+				MessageHandler.sendMessage(player, Messages.SETSPAWN_NOOWNER);
 
 				return true;
 			}
@@ -42,7 +43,9 @@ public class SetClaimSpawn implements CommandExecutor {
 
 			storage.setLocation(claim.getID().toString(), loc);
 
-			MessageHandler.sendMessage(player, "&eNew spawn location has been set for claimid &6" + claim.getID().toString() + " &eat the coordinates &6X:" + locX + " Y:" + locY + " Z:" + locZ + " &ein world &6" + world + "&e.");
+			final String locText = "X:" + locX + " Y:" + locY + " Z:" + locZ;
+
+			MessageHandler.sendMessage(player, MessageHandler.placeholders(Messages.SETSPAWN_SETSPAWN, claim.getID().toString(), player.getName(), null, locText, world, null));
 
 			return true;
 		}

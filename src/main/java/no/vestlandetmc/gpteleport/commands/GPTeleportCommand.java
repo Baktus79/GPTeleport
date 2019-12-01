@@ -11,12 +11,16 @@ import org.bukkit.entity.Player;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import no.vestlandetmc.gpteleport.config.Config;
+import no.vestlandetmc.gpteleport.config.Messages;
+import no.vestlandetmc.gpteleport.handlers.Cooldown;
 import no.vestlandetmc.gpteleport.handlers.MessageHandler;
 import no.vestlandetmc.gpteleport.handlers.StorageHandler;
+import no.vestlandetmc.gpteleport.handlers.Warmup;
 
 public class GPTeleportCommand implements CommandExecutor {
 
-	private int claimId = 0;
+	private long claimId = 0;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,16 +33,18 @@ public class GPTeleportCommand implements CommandExecutor {
 		final UUID uuid = player.getUniqueId();
 		Claim claim = null;
 		final StorageHandler storage = new StorageHandler();
+		final Cooldown cooldown = new Cooldown();
+		final Warmup warmup = new Warmup();
 
 		if(args.length != 0) {
-			if(isInt(args[0])) {
-				this.claimId = Integer.parseInt(args[0]);
+			if(isNumber(args[0])) {
+				this.claimId = Long.parseLong(args[0]);
 			} else {
-				MessageHandler.sendMessage(player, "&c" + args[0] + " is not a valid number.");
+				MessageHandler.sendMessage(player, Messages.UNVALID_NUMBER);
 				return true;
 			}
 		} else {
-			MessageHandler.sendMessage(player, "&cYou must enter the claimID for teleport.");
+			MessageHandler.sendMessage(player, Messages.UNVALID_CLAIMID);
 			return true;
 		}
 
@@ -49,11 +55,7 @@ public class GPTeleportCommand implements CommandExecutor {
 		}
 
 		if(claim == null) {
-			MessageHandler.sendMessage(player, "&cThis claim does not exist.");
-			return true;
-		} else if(claim.getOwnerName().equals(player.getName())) {
-			MessageHandler.sendMessage(player, "&cYou are not the owner of this claim.");
-
+			MessageHandler.sendMessage(player, Messages.UNVALID_CLAIMID);
 			return true;
 		}
 
@@ -66,21 +68,35 @@ public class GPTeleportCommand implements CommandExecutor {
 		final World world = locMax.getWorld();
 
 		if(storage.storedLocation(claim.getID().toString())) {
+			if(Config.COOLDOWN_ENABLE) {
+				if(!cooldown.addCooldown(player)) { return true; }
+			}
+			if(warmup.isWarmup(player)) { return true; }
 			final Location loc = storage.getLocation(claim.getID().toString());
-			player.teleport(loc);
+			if(Config.WARMUP_ENABLE) {
+				warmup.addWarmup(player, loc);
+				return true;
+			} else { player.teleport(loc); }
 		} else {
+			if(Config.COOLDOWN_ENABLE) {
+				if(!cooldown.addCooldown(player)) { return true; }
+			}
+			if(warmup.isWarmup(player)) { return true; }
 			final Location loc = new Location(world, locX, locY, locZ);
-			player.teleport(loc);
+			if(Config.WARMUP_ENABLE) {
+				warmup.addWarmup(player, loc);
+				return true;
+			} else { player.teleport(loc); }
 		}
 
-		MessageHandler.sendMessage(player, "&eYou have successfully teleported to your claim with the id &6" + this.claimId);
+		MessageHandler.sendMessage(player, MessageHandler.placeholders(Messages.TELEPORT_TP, claim.getID().toString(), player.getName(), null, null, null, null));
 
 		return true;
 	}
 
-	private boolean isInt(String str) {
+	private boolean isNumber(String str) {
 		try {
-			Integer.parseInt(str);
+			Long.parseLong(str);
 			return true;
 		} catch (final NumberFormatException e) {
 			return false;
