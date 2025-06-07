@@ -1,45 +1,45 @@
 name: GPTeleport
-version: ${project.version}
+version: ${version}
 author: Baktus_79
 main: no.vestlandetmc.gpteleport.GPTeleportPlugin
 description: Addon for GriefPrevention that let you teleport to your claims.
 website: www.vestlandetmc.no
 prefix: GPTeleport
 api-version: 1.13
-softdepend: [GriefPrevention]
+softdepend: [ GriefPrevention ]
 commands:
   gpteleport:
     description: Teleport to one of your claims.
     aliases:
-    - gpt
-    - gptp
+      - gpt
+      - gptp
     permission: gpteleport.teleport
     permission-message: §cSorry, but you do not have permissions to do that.
     usage: /<command> [claimid]
   gpteleportlist:
     description: Get a list of all your claims.
     aliases:
-    - gptplist
-    - gptl
-    - gptlist
+      - gptplist
+      - gptl
+      - gptlist
     permission: gpteleport.list
     permission-message: §cSorry, but you do not have permissions to do that.
     usage: /<command> [page]
   setclaimspawn:
     description: Set new spawn for your claim.
     aliases:
-    - gptpspawn
-    - scspawn
-    - gptspawn
+      - gptpspawn
+      - scspawn
+      - gptspawn
     permission: gpteleport.setspawn
     permission-message: §cSorry, but you do not have permissions to do that.
     usage: /<command>
   setclaimname:
     description: Set custom name for your claim.
     aliases:
-    - gptpname
-    - gptname
-    - scname
+      - gptpname
+      - gptname
+      - scname
     permission: gpteleport.setname
     permission-message: §cSorry, but you do not have permissions to do that.
     usage: /<command> [name]
